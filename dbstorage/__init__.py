@@ -1,1 +1,1 @@
-default_app_config = 'dbstorage.apps.DBStorageConfig'
+default_app_config = "dbstorage.apps.DBStorageConfig"

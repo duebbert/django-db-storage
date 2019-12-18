@@ -4,3 +4,4 @@ pip
 setuptools
 twine
 wheel
+black

@@ -2,6 +2,7 @@
 .coverage
 .DS_Store
 .idea
+.virtualenv
 
 build
 dist

@@ -39,31 +39,31 @@ class DBStorageTests(TestCase):
         self.storage.delete('storage_test')
         self.assertFalse(self.storage.exists('storage_test'))
 
-    def test_file_created_time(self):
+    def test_file_get_created_time(self):
         name = 'test.file'
         DBFile.objects.create(content=b'custom content', name=name)
-        ctime = self.storage.created_time(name)
+        ctime = self.storage.get_created_time(name)
 
         self.assertEqual(DBFile.objects.get(name=name).created_on, ctime)
-        self.assertLess(timezone.now() - self.storage.created_time(name), timedelta(seconds=1))
-        self.assertNumQueries(1, self.storage.created_time, name)
+        self.assertLess(timezone.now() - self.storage.get_created_time(name), timedelta(seconds=1))
+        self.assertNumQueries(1, self.storage.get_created_time, name)
 
-    def test_file_modified_time(self):
+    def test_file_get_modified_time(self):
         name = 'test.file'
         DBFile.objects.create(content=b'custom content', name=name)
-        mtime = self.storage.modified_time(name)
+        mtime = self.storage.get_modified_time(name)
 
         self.assertEqual(DBFile.objects.get(name=name).updated_on, mtime)
-        self.assertLess(timezone.now() - self.storage.modified_time(name), timedelta(seconds=1))
-        self.assertNumQueries(1, self.storage.modified_time, name)
+        self.assertLess(timezone.now() - self.storage.get_modified_time(name), timedelta(seconds=1))
+        self.assertNumQueries(1, self.storage.get_modified_time, name)
 
     @override_settings(USE_TZ=False)
-    def test_file_created_time_tz_disabled(self):
-        self.test_file_created_time()
+    def test_file_get_created_time_tz_disabled(self):
+        self.test_file_get_created_time()
 
     @override_settings(USE_TZ=False)
-    def test_file_modified_time_tz_disabled(self):
-        self.test_file_modified_time()
+    def test_file_get_modified_time_tz_disabled(self):
+        self.test_file_get_modified_time()
 
     def test_file_save_without_name(self):
         self.assertFalse(self.storage.exists('test.file'))
@@ -96,4 +96,4 @@ class DBStorageTests(TestCase):
         self.assertRaises(NotImplementedError, self.storage.listdir, '')
 
     def test_accessed_time_not_implemented(self):
-        self.assertRaises(NotImplementedError, self.storage.accessed_time, '')
+        self.assertRaises(NotImplementedError, self.storage.get_accessed_time, '')
